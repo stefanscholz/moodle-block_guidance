@@ -35,10 +35,19 @@ class renderer extends plugin_renderer_base {
      * Render the recommended next step card.
      *
      * @param int $courseid Course id.
+     * @param bool $showtitle Whether to render the block title row.
+     * @param string $blocktitle The block title text to display.
      * @return string HTML.
      */
-    public function render_next_step(int $courseid): string {
+    public function render_next_step(int $courseid, bool $showtitle = true, string $blocktitle = ''): string {
         $rec = recommendation::for_course($courseid);
+
+        // Title row data, shared by both states.
+        $titledata = [
+            'showtitle' => $showtitle,
+            'blocktitle' => $blocktitle,
+            'helpicon' => $this->help_icon('nextstep_heading', 'block_guidance'),
+        ];
 
         // Every suggestion has been dismissed: offer to start over.
         if ($rec === null) {
@@ -47,7 +56,7 @@ class renderer extends plugin_renderer_base {
                 'reset' => 1,
                 'sesskey' => sesskey(),
             ]);
-            return $this->render_from_template('block_guidance/next_step', [
+            return $this->render_from_template('block_guidance/next_step', $titledata + [
                 'hasrecommendation' => false,
                 'donemessage' => get_string('alldismissed', 'block_guidance'),
                 'reseturl' => $reseturl->out(false),
@@ -59,6 +68,6 @@ class renderer extends plugin_renderer_base {
         $exporter = new next_step_exporter($courseid, $rec, $context);
         $data = (array) $exporter->export($this);
         $data['hasrecommendation'] = true;
-        return $this->render_from_template('block_guidance/next_step', $data);
+        return $this->render_from_template('block_guidance/next_step', $titledata + $data);
     }
 }

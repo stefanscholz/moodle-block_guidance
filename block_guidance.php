@@ -33,7 +33,43 @@ class block_guidance extends block_base {
      * Initialise the block.
      */
     public function init() {
-        $this->title = get_string('pluginname', 'block_guidance');
+        $this->title = get_string('nextstep_heading', 'block_guidance');
+    }
+
+    /**
+     * Apply the instance configuration to the block title.
+     *
+     * The title and help icon are rendered inside the block content (see the
+     * template), so the standard block header is always suppressed via
+     * {@see hide_header()}. We still keep $this->title meaningful for block
+     * management screens.
+     */
+    public function specialization() {
+        if (!empty($this->config->title)) {
+            $this->title = format_string($this->config->title);
+        } else {
+            $this->title = get_string('nextstep_heading', 'block_guidance');
+        }
+    }
+
+    /**
+     * Render the title ourselves inside the content, so suppress the standard
+     * block header (which would otherwise duplicate the title and its help icon
+     * in the accessibility skip link).
+     *
+     * @return bool
+     */
+    public function hide_header() {
+        return true;
+    }
+
+    /**
+     * Enable the per-instance settings form even though only one instance is allowed.
+     *
+     * @return bool
+     */
+    public function instance_allow_config() {
+        return true;
     }
 
     /**
@@ -63,15 +99,30 @@ class block_guidance extends block_base {
 
         $this->content = new stdClass();
         $this->content->footer = '';
+        $this->content->text = '';
 
         // No recommendation outside a real course (e.g. the front page).
         if (empty($COURSE->id) || $COURSE->id == SITEID) {
-            $this->content->text = '';
             return $this->content;
         }
 
+        // Only show to users who can manage activities (e.g. teachers); the
+        // recommendation is about setting up the course, not for students.
+        $coursecontext = context_course::instance($COURSE->id);
+        if (!has_capability('moodle/course:manageactivities', $coursecontext)) {
+            return $this->content;
+        }
+
+        // Honour the "only while editing" visibility setting.
+        $visibility = $this->config->visibility ?? 'always';
+        if ($visibility === 'editing' && !$this->page->user_is_editing()) {
+            return $this->content;
+        }
+
+        $showtitle = !isset($this->config->showtitle) || !empty($this->config->showtitle);
+
         $renderer = $this->page->get_renderer('block_guidance');
-        $this->content->text = $renderer->render_next_step((int) $COURSE->id);
+        $this->content->text = $renderer->render_next_step((int) $COURSE->id, $showtitle, $this->title);
 
         // Open the chooser in a modal when the call-to-action is clicked
         // (progressive enhancement; the link still works without JavaScript).

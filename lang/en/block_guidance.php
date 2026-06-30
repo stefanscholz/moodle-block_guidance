@@ -29,8 +29,22 @@ $string['guidance:addinstance'] = 'Add a new Guidance block';
 $string['guidance:myaddinstance'] = 'Add a new Guidance block to the Dashboard';
 $string['privacy:metadata'] = 'The Guidance block does not store any personal data.';
 
+// Instance settings.
+$string['config_showtitle'] = 'Show the block title';
+$string['config_title'] = 'Custom block title';
+$string['config_title_help'] = 'A title to show instead of the default "Recommended next step". Leave blank to use the default.';
+$string['config_visibility'] = 'When to show this block';
+$string['config_visibility_help'] = 'Choose "Only while editing" to hide the block from students and show it to teachers just while they have editing turned on.';
+$string['config_visibility_always'] = 'Always show';
+$string['config_visibility_editing'] = 'Only while editing';
+
 // Next step card.
 $string['nextstep_heading'] = 'Recommended next step';
+$string['nextstep_heading_help'] = 'This shows a single suggested next step for building out your course, based on what it currently contains.
+
+As you add activities and resources, the suggestion updates to point you at a sensible next thing to set up.
+
+Use **Set this up** to jump straight into creating the suggested item, or **Dismiss** to move on to a different suggestion.';
 $string['cta_default'] = 'Set this up';
 $string['dismiss'] = 'Dismiss';
 $string['alldismissed'] = "You've reviewed all our suggestions for now.";

@@ -20,8 +20,10 @@
     Recommended next step card.
 
     Context variables required for this template:
+    * showtitle - Whether to render the block title row.
+    * blocktitle - The block title text.
+    * helpicon - Rendered help icon HTML explaining the recommendation.
     * hasrecommendation - Whether a recommendation is available.
-    * heading - Eyebrow label above the title.
     * title - Short recommendation title.
     * rationale - One or two sentences explaining the recommendation.
     * iconurl - Activity icon URL.
@@ -35,8 +37,10 @@
 
     Example context (json):
     {
+        "showtitle": true,
+        "blocktitle": "Recommended next step",
+        "helpicon": "",
         "hasrecommendation": true,
-        "heading": "Recommended next step",
         "title": "Add a diagnostic quiz",
         "rationale": "Your course has no activities yet.",
         "iconurl": "https://example.com/quiz.svg",
@@ -50,20 +54,26 @@
     }
 }}
 <div class="block-guidance-nextstep">
+{{#showtitle}}
+    <h3 class="h5 card-title block-guidance-blocktitle">{{blocktitle}}{{{helpicon}}}</h3>
+{{/showtitle}}
 {{#hasrecommendation}}
-    <div class="block-guidance-nextstep-header">
-        <img src="{{iconurl}}" alt="" aria-hidden="true" class="block-guidance-icon">
-        <span class="block-guidance-eyebrow">{{heading}}</span>
-    </div>
-    <h4 class="block-guidance-title">{{title}}</h4>
-    <p class="block-guidance-rationale">{{rationale}}</p>
-    <div class="block-guidance-actions">
-        <a href="{{ctaurl}}" class="btn btn-primary block-guidance-cta" data-action="guidance-chooser">{{ctalabel}}</a>
-        <a href="{{dismissurl}}" class="btn btn-link block-guidance-dismiss">{{dismisslabel}}</a>
+    <div class="block-guidance-card">
+        <div class="block-guidance-nextstep-header">
+            <img src="{{iconurl}}" alt="" aria-hidden="true" class="block-guidance-icon">
+            <h4 class="block-guidance-title">{{title}}</h4>
+        </div>
+        <p class="block-guidance-rationale">{{rationale}}</p>
+        <div class="block-guidance-actions">
+            <a href="{{ctaurl}}" class="btn btn-primary block-guidance-cta" data-action="guidance-chooser">{{ctalabel}}</a>
+            <a href="{{dismissurl}}" class="btn btn-link block-guidance-dismiss">{{dismisslabel}}</a>
+        </div>
     </div>
 {{/hasrecommendation}}
 {{^hasrecommendation}}
-    <p class="block-guidance-done">{{donemessage}}</p>
-    <a href="{{reseturl}}" class="btn btn-link block-guidance-reset">{{resetlabel}}</a>
+    <div class="block-guidance-card">
+        <p class="block-guidance-done">{{donemessage}}</p>
+        <a href="{{reseturl}}" class="btn btn-link block-guidance-reset">{{resetlabel}}</a>
+    </div>
 {{/hasrecommendation}}
 </div>

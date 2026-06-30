@@ -1,34 +1,52 @@
+/* We render our own title inside the content, so drop the core top margin.
+   The core .mt-3 utility uses !important, so this override needs it too. */
+.block_guidance .card-text.content.mt-3 {
+    margin-top: 0 !important;
+}
+
 .block-guidance-nextstep {
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
 }
 
+.block-guidance-blocktitle {
+    margin: 0;
+}
+
+/* The recommendation itself sits in its own card, distinct from the block title. */
+.block-guidance-card {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding: 1rem;
+    background-color: var(--light, #f8f9fa);
+    border: 1px solid var(--border-color, #dee2e6);
+    border-radius: 0.75rem;
+}
+
 .block-guidance-nextstep-header {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     gap: 0.5rem;
 }
 
 .block-guidance-icon {
     width: 24px;
     height: 24px;
-}
-
-.block-guidance-eyebrow {
-    font-size: 0.75rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.04em;
-    color: var(--secondary, #6c757d);
+    flex-shrink: 0;
+    margin-top: 0.15em;
 }
 
 .block-guidance-title {
     margin: 0;
+    font-size: 1.125rem;
+    line-height: 1.3;
 }
 
 .block-guidance-rationale {
     margin: 0;
+    font-size: 0.875rem;
 }
 
 .block-guidance-actions {
