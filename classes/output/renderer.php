@@ -19,6 +19,7 @@ namespace block_guidance\output;
 defined('MOODLE_INTERNAL') || die();
 
 use block_guidance\local\recommendation;
+use moodle_url;
 use plugin_renderer_base;
 
 /**
@@ -38,8 +39,26 @@ class renderer extends plugin_renderer_base {
      */
     public function render_next_step(int $courseid): string {
         $rec = recommendation::for_course($courseid);
-        $exporter = new next_step_exporter($courseid, $rec);
-        $data = $exporter->export($this);
+
+        // Every suggestion has been dismissed: offer to start over.
+        if ($rec === null) {
+            $reseturl = new moodle_url('/blocks/guidance/dismiss.php', [
+                'courseid' => $courseid,
+                'reset' => 1,
+                'sesskey' => sesskey(),
+            ]);
+            return $this->render_from_template('block_guidance/next_step', [
+                'hasrecommendation' => false,
+                'donemessage' => get_string('alldismissed', 'block_guidance'),
+                'reseturl' => $reseturl->out(false),
+                'resetlabel' => get_string('startover', 'block_guidance'),
+            ]);
+        }
+
+        $context = \context_course::instance($courseid);
+        $exporter = new next_step_exporter($courseid, $rec, $context);
+        $data = (array) $exporter->export($this);
+        $data['hasrecommendation'] = true;
         return $this->render_from_template('block_guidance/next_step', $data);
     }
 }

@@ -20,29 +20,50 @@
     Recommended next step card.
 
     Context variables required for this template:
+    * hasrecommendation - Whether a recommendation is available.
     * heading - Eyebrow label above the title.
     * title - Short recommendation title.
     * rationale - One or two sentences explaining the recommendation.
     * iconurl - Activity icon URL.
     * ctaurl - Deep-link into the guidance chooser at a specific node.
     * ctalabel - Call-to-action button label.
+    * dismissurl - Link that dismisses this recommendation and shows the next.
+    * dismisslabel - Dismiss button label.
+    * donemessage - Shown when every recommendation has been dismissed.
+    * reseturl - Link that clears dismissals and starts over.
+    * resetlabel - Start-over link label.
 
     Example context (json):
     {
+        "hasrecommendation": true,
         "heading": "Recommended next step",
         "title": "Add a diagnostic quiz",
         "rationale": "Your course has no activities yet.",
         "iconurl": "https://example.com/quiz.svg",
         "ctaurl": "https://example.com/chooser.php?courseid=2&node=r_quiz",
-        "ctalabel": "Set this up"
+        "ctalabel": "Set this up",
+        "dismissurl": "https://example.com/dismiss.php?courseid=2&sesskey=abc",
+        "dismisslabel": "Dismiss",
+        "donemessage": "You've reviewed all our suggestions for now.",
+        "reseturl": "https://example.com/dismiss.php?courseid=2&reset=1&sesskey=abc",
+        "resetlabel": "Start over"
     }
 }}
 <div class="block-guidance-nextstep">
+{{#hasrecommendation}}
     <div class="block-guidance-nextstep-header">
         <img src="{{iconurl}}" alt="" aria-hidden="true" class="block-guidance-icon">
         <span class="block-guidance-eyebrow">{{heading}}</span>
     </div>
     <h4 class="block-guidance-title">{{title}}</h4>
     <p class="block-guidance-rationale">{{rationale}}</p>
-    <a href="{{ctaurl}}" class="btn btn-primary block-guidance-cta">{{ctalabel}}</a>
+    <div class="block-guidance-actions">
+        <a href="{{ctaurl}}" class="btn btn-primary block-guidance-cta" data-action="guidance-chooser">{{ctalabel}}</a>
+        <a href="{{dismissurl}}" class="btn btn-link block-guidance-dismiss">{{dismisslabel}}</a>
+    </div>
+{{/hasrecommendation}}
+{{^hasrecommendation}}
+    <p class="block-guidance-done">{{donemessage}}</p>
+    <a href="{{reseturl}}" class="btn btn-link block-guidance-reset">{{resetlabel}}</a>
+{{/hasrecommendation}}
 </div>

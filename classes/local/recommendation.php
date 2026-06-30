@@ -59,13 +59,43 @@ class recommendation {
     }
 
     /**
-     * Return the (static) recommended next step for a course.
+     * Ordered list of candidate recommendations.
      *
-     * @param int $courseid Course id (unused in the static prototype).
-     * @return self
+     * Static prototype data: a future backend will derive and rank these from
+     * policies and/or AI. Each entry deep-links to a result node in the
+     * tool_guidance decision tree.
+     *
+     * @return self[]
      */
-    public static function for_course(int $courseid): self {
-        // Static prototype: always recommend the diagnostic quiz node.
-        return new self('r_quiz', 'rec_quiz_title', 'rec_quiz_rationale', 'quiz');
+    private static function all(): array {
+        return [
+            new self('r_quiz', 'rec_quiz_title', 'rec_quiz_rationale', 'quiz'),
+            new self('r_forum', 'rec_forum_title', 'rec_forum_rationale', 'forum'),
+            new self('r_assign', 'rec_assign_title', 'rec_assign_rationale', 'assign'),
+        ];
+    }
+
+    /**
+     * User preference name holding how many recommendations the user has
+     * dismissed for a given course.
+     *
+     * @param int $courseid Course id.
+     * @return string
+     */
+    public static function dismissed_pref(int $courseid): string {
+        return 'block_guidance_dismissed_' . $courseid;
+    }
+
+    /**
+     * Return the current recommended next step for a course, or null when the
+     * user has dismissed every suggestion.
+     *
+     * @param int $courseid Course id.
+     * @return self|null
+     */
+    public static function for_course(int $courseid): ?self {
+        $dismissed = (int) get_user_preferences(self::dismissed_pref($courseid), 0);
+
+        return self::all()[$dismissed] ?? null;
     }
 }

@@ -31,6 +31,13 @@
     margin: 0;
 }
 
+.block-guidance-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    flex-wrap: wrap;
+}
+
 .block-guidance-cta {
     align-self: flex-start;
 }

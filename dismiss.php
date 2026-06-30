@@ -15,17 +15,32 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Version details for the Guidance block.
+ * Dismiss the current guidance recommendation (or reset all dismissals) and
+ * return to the course. Works without JavaScript.
  *
  * @package    block_guidance
  * @copyright  2026 bdecent gmbh <https://bdecent.de>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-defined('MOODLE_INTERNAL') || die();
+require(__DIR__ . '/../../config.php');
 
-$plugin->component = 'block_guidance';
-$plugin->version   = 2026063002;
-$plugin->requires  = 2025041400; // Moodle 5.0 or later (targeting 5.2).
-$plugin->maturity  = MATURITY_ALPHA;
-$plugin->release   = '0.1.0';
+use block_guidance\local\recommendation;
+
+$courseid = required_param('courseid', PARAM_INT);
+$reset = optional_param('reset', 0, PARAM_BOOL);
+
+$course = get_course($courseid);
+require_login($course);
+require_sesskey();
+
+$pref = recommendation::dismissed_pref($courseid);
+
+if ($reset) {
+    unset_user_preference($pref);
+} else {
+    $dismissed = (int) get_user_preferences($pref, 0);
+    set_user_preference($pref, $dismissed + 1);
+}
+
+redirect(new moodle_url('/course/view.php', ['id' => $courseid]));

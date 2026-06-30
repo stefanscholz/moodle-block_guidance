@@ -73,6 +73,10 @@ class block_guidance extends block_base {
         $renderer = $this->page->get_renderer('block_guidance');
         $this->content->text = $renderer->render_next_step((int) $COURSE->id);
 
+        // Open the chooser in a modal when the call-to-action is clicked
+        // (progressive enhancement; the link still works without JavaScript).
+        $this->page->requires->js_call_amd('tool_guidance/chooser_modal', 'init');
+
         return $this->content;
     }
 

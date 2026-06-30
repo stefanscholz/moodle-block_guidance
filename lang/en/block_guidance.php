@@ -32,8 +32,15 @@ $string['privacy:metadata'] = 'The Guidance block does not store any personal da
 // Next step card.
 $string['nextstep_heading'] = 'Recommended next step';
 $string['cta_default'] = 'Set this up';
+$string['dismiss'] = 'Dismiss';
+$string['alldismissed'] = "You've reviewed all our suggestions for now.";
+$string['startover'] = 'Start over';
 $string['nostep'] = 'No recommendation available yet.';
 
-// Static sample recommendation (replaced by the backend later).
+// Static sample recommendations (replaced by the backend later).
 $string['rec_quiz_title'] = 'Add a diagnostic quiz';
 $string['rec_quiz_rationale'] = 'Your course has no activities yet. A short auto-graded quiz is a quick way to find out what your students already know.';
+$string['rec_forum_title'] = 'Start a discussion forum';
+$string['rec_forum_rationale'] = 'A forum gives students a place to introduce themselves and ask questions, building a sense of community early on.';
+$string['rec_assign_title'] = 'Set up an assignment';
+$string['rec_assign_rationale'] = 'An assignment lets students submit work for feedback and a grade — a solid next step once the basics are in place.';

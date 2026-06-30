@@ -19,6 +19,7 @@ namespace block_guidance\output;
 defined('MOODLE_INTERNAL') || die();
 
 use block_guidance\local\recommendation;
+use context;
 use core\external\exporter;
 use moodle_url;
 use renderer_base;
@@ -43,11 +44,21 @@ class next_step_exporter extends exporter {
      *
      * @param int $courseid Course id.
      * @param recommendation $rec The recommendation.
+     * @param context $context Context used to format the text properties.
      */
-    public function __construct(int $courseid, recommendation $rec) {
+    public function __construct(int $courseid, recommendation $rec, context $context) {
         $this->courseid = $courseid;
         $this->rec = $rec;
-        parent::__construct((object) []);
+        parent::__construct((object) [], ['context' => $context]);
+    }
+
+    /**
+     * Related objects required by this exporter.
+     *
+     * @return array
+     */
+    protected static function define_related() {
+        return ['context' => 'context'];
     }
 
     /**
@@ -63,6 +74,8 @@ class next_step_exporter extends exporter {
             'iconurl' => ['type' => PARAM_URL],
             'ctaurl' => ['type' => PARAM_URL],
             'ctalabel' => ['type' => PARAM_TEXT],
+            'dismissurl' => ['type' => PARAM_URL],
+            'dismisslabel' => ['type' => PARAM_TEXT],
         ];
     }
 
@@ -77,6 +90,10 @@ class next_step_exporter extends exporter {
             'courseid' => $this->courseid,
             'node' => $this->rec->nodeid,
         ]);
+        $dismissurl = new moodle_url('/blocks/guidance/dismiss.php', [
+            'courseid' => $this->courseid,
+            'sesskey' => sesskey(),
+        ]);
 
         return [
             'heading' => get_string('nextstep_heading', 'block_guidance'),
@@ -85,6 +102,8 @@ class next_step_exporter extends exporter {
             'iconurl' => $output->image_url('monologo', 'mod_' . $this->rec->modname)->out(false),
             'ctaurl' => $ctaurl->out(false),
             'ctalabel' => get_string('cta_default', 'block_guidance'),
+            'dismissurl' => $dismissurl->out(false),
+            'dismisslabel' => get_string('dismiss', 'block_guidance'),
         ];
     }
 }
