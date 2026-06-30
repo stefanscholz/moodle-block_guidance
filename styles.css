@@ -1,0 +1,36 @@
+.block-guidance-nextstep {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.block-guidance-nextstep-header {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.block-guidance-icon {
+    width: 24px;
+    height: 24px;
+}
+
+.block-guidance-eyebrow {
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--secondary, #6c757d);
+}
+
+.block-guidance-title {
+    margin: 0;
+}
+
+.block-guidance-rationale {
+    margin: 0;
+}
+
+.block-guidance-cta {
+    align-self: flex-start;
+}
