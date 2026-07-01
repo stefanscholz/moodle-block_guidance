@@ -23,6 +23,7 @@ use core_external\external_single_structure;
 use core_external\external_value;
 use tool_guidance\local\dismissal_manager;
 use tool_guidance\local\engine;
+use tool_guidance\local\target_resolver;
 
 defined('MOODLE_INTERNAL') || die();
 
@@ -66,13 +67,10 @@ class get_suggestion extends external_api {
             return ['hassuggestion' => false, 'hasdismissals' => $hasdismissals];
         }
 
-        // Deep-link into the Guidance chooser, which shows the templates for this
-        // activity and (later) creates it. The block loads tool_guidance/chooser_modal,
-        // so this opens in a modal in place.
-        $clickurl = new \moodle_url('/admin/tool/guidance/chooser.php', [
-            'courseid' => $params['courseid'],
-            'modname'  => $suggestion->modname,
-        ]);
+        // Resolve the rule's chosen call-to-action target (graph node, admin page
+        // or the suggested activity), with a safe fallback. Only a chooser URL is
+        // opened in the block's modal; other targets navigate normally.
+        $resolved = target_resolver::resolve($suggestion, $params['courseid']);
 
         return [
             'hassuggestion'  => true,
@@ -82,8 +80,9 @@ class get_suggestion extends external_api {
             'modnamedisplay' => get_string('pluginname', 'mod_' . $suggestion->modname),
             'name'           => $suggestion->name,
             'rationale'      => $suggestion->rationale,
-            'signal'         => $suggestion->signal,
-            'clickurl'       => $clickurl->out(false),
+            'signal'         => $suggestion->signaltype,
+            'clickurl'       => $resolved['url']->out(false),
+            'ischooser'      => $resolved['ischooser'],
         ];
     }
 
@@ -102,7 +101,8 @@ class get_suggestion extends external_api {
             'name'           => new external_value(PARAM_TEXT, 'Default activity name', VALUE_OPTIONAL),
             'rationale'      => new external_value(PARAM_TEXT, 'Teacher-facing reason', VALUE_OPTIONAL),
             'signal'         => new external_value(PARAM_ALPHA, 'Signal category', VALUE_OPTIONAL),
-            'clickurl'       => new external_value(PARAM_URL, 'Add-activity URL', VALUE_OPTIONAL),
+            'clickurl'       => new external_value(PARAM_URL, 'Call-to-action URL', VALUE_OPTIONAL),
+            'ischooser'      => new external_value(PARAM_BOOL, 'Whether clickurl opens the guidance chooser (modal)', VALUE_OPTIONAL),
         ]);
     }
 }

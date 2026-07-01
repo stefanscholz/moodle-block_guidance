@@ -43,9 +43,16 @@
 <div class="guidance-card">
     <p class="guidance-rationale mb-2">{{rationale}}</p>
     <div class="d-flex align-items-center justify-content-between">
+        {{#ischooser}}
         <a href="{{clickurl}}" class="btn btn-primary btn-sm" data-action="guidance-chooser">
             {{#str}}addsuggested, block_guidance, {{modnamedisplay}}{{/str}}
         </a>
+        {{/ischooser}}
+        {{^ischooser}}
+        <a href="{{clickurl}}" class="btn btn-primary btn-sm">
+            {{#str}}addsuggested, block_guidance, {{modnamedisplay}}{{/str}}
+        </a>
+        {{/ischooser}}
         <button type="button" class="btn btn-icon btn-link p-1" data-action="dismiss" data-ruleid="{{ruleid}}"
                 title="{{#str}}dismiss, block_guidance{{/str}}"
                 aria-label="{{#str}}dismiss, block_guidance{{/str}}">

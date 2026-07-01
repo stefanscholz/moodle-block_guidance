@@ -25,10 +25,10 @@
 defined('MOODLE_INTERNAL') || die();
 
 $plugin->component = 'block_guidance';
-$plugin->version   = 2026070101;
+$plugin->version   = 2026070102;
 $plugin->requires  = 2024100700; // Moodle 4.5 or later.
 $plugin->maturity  = MATURITY_BETA;
 $plugin->release   = '0.2.0';
 $plugin->dependencies = [
-    'tool_guidance' => 2026070103, // Requires the suggestion engine (rules + dismissals).
+    'tool_guidance' => 2026070107, // Requires target_resolver (rule CTA targets).
 ];
