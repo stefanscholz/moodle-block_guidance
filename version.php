@@ -26,7 +26,7 @@ defined('MOODLE_INTERNAL') || die();
 
 $plugin->component = 'block_guidance';
 $plugin->version   = 2026070101;
-$plugin->requires  = 2025041400; // Moodle 5.0 or later.
+$plugin->requires  = 2024100700; // Moodle 4.5 or later.
 $plugin->maturity  = MATURITY_BETA;
 $plugin->release   = '0.2.0';
 $plugin->dependencies = [
