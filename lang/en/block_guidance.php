@@ -27,7 +27,7 @@ defined('MOODLE_INTERNAL') || die();
 $string['pluginname'] = 'Guidance';
 $string['guidance:addinstance'] = 'Add a new Guidance block';
 $string['guidance:myaddinstance'] = 'Add a new Guidance block to the Dashboard';
-$string['privacy:metadata'] = 'The Guidance block does not store any personal data.';
+$string['privacy:metadata'] = 'The Guidance block does not store any personal data; dismissals are stored by the tool_guidance plugin.';
 
 // Instance settings.
 $string['config_showtitle'] = 'Show the block title';
@@ -44,17 +44,9 @@ $string['nextstep_heading_help'] = 'This shows a single suggested next step for 
 
 As you add activities and resources, the suggestion updates to point you at a sensible next thing to set up.
 
-Use **Set this up** to jump straight into creating the suggested item, or **Dismiss** to move on to a different suggestion.';
-$string['cta_default'] = 'Set this up';
-$string['dismiss'] = 'Dismiss';
-$string['alldismissed'] = "You've reviewed all our suggestions for now.";
-$string['startover'] = 'Start over';
-$string['nostep'] = 'No recommendation available yet.';
-
-// Static sample recommendations (replaced by the backend later).
-$string['rec_quiz_title'] = 'Add a diagnostic quiz';
-$string['rec_quiz_rationale'] = 'Your course has no activities yet. A short auto-graded quiz is a quick way to find out what your students already know.';
-$string['rec_forum_title'] = 'Start a discussion forum';
-$string['rec_forum_rationale'] = 'A forum gives students a place to introduce themselves and ask questions, building a sense of community early on.';
-$string['rec_assign_title'] = 'Set up an assignment';
-$string['rec_assign_rationale'] = 'An assignment lets students submit work for feedback and a grade — a solid next step once the basics are in place.';
+Use **Set this up** to open the guidance chooser for the suggested activity, or **Skip** to move on to a different suggestion.';
+$string['addsuggested'] = 'Set up {$a}';
+$string['dismiss'] = 'Not useful, skip this suggestion';
+$string['nosuggestion'] = 'No suggestions right now. This course looks well rounded.';
+$string['resetdismissed'] = 'Reset skipped suggestions';
+$string['managerules'] = 'Manage suggestion rules';
