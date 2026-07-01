@@ -80,7 +80,7 @@ class get_suggestion extends external_api {
             'modnamedisplay' => get_string('pluginname', 'mod_' . $suggestion->modname),
             'name'           => $suggestion->name,
             'rationale'      => $suggestion->rationale,
-            'signal'         => $suggestion->signal,
+            'signal'         => $suggestion->signaltype,
             'clickurl'       => $resolved['url']->out(false),
             'ischooser'      => $resolved['ischooser'],
         ];
