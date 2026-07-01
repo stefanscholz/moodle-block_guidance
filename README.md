@@ -1,34 +1,25 @@
 # block_guidance — Guidance next-step block
 
-Static front-end prototype that surfaces a single recommended **next step**
-(icon, title, short rationale, CTA) on course pages, helping teachers decide
-what to do in a new, empty Moodle course.
+Surfaces a single recommended **next step** (rationale + call-to-action) on course pages,
+helping teachers decide what to set up next. Teacher-facing (needs
+`moodle/course:manageactivities`); one instance per course.
 
-> **Status: static interface only.** The recommendation is a hardcoded
-> placeholder. The real data and AI/policy backend are built by a separate team
-> and will be wired in later. Target: **Moodle 5.2** (PHP 8.2+).
+The recommendation is **engine-driven**: the block asks
+[`tool_guidance`](../../admin/tool/guidance)'s suggestion engine for the top activity for the
+course, loads it asynchronously via web service, and renders a card with:
 
-The CTA deep-links into the companion [`tool_guidance`](https://github.com/stefanscholz/moodle-tool_guidance)
-chooser at a specific decision-tree node. The recommendation comes from the
-static `block_guidance\local\recommendation` class — the swap-point for the
-future policy/AI backend.
+- **Set this up** — deep-links into the guidance chooser at the presets for the suggested
+  activity (`tool_guidance/chooser_modal` opens it in a modal, in place).
+- **Skip** — dismisses the suggestion course-wide (with a cooldown) and shows the next one.
+- **Reset skipped suggestions** — clears the course's dismissals so everything can reappear.
 
-## Installation
+Managers see a link to the rule editor in the block footer.
 
-Clone (or copy) this repository into `blocks/guidance` inside your Moodle:
+## Depends on
 
-```sh
-# From your Moodle root:
-git clone git@github.com:stefanscholz/moodle-block_guidance.git blocks/guidance
-```
+`tool_guidance` (the engine, rules and chooser). Install that first.
 
-Then visit **Site administration → Notifications** to install the plugin.
+## Web services
 
-To exercise it: in a course, turn editing on, add the **Guidance** block, and
-click its call-to-action — it opens the chooser at the recommended node.
-
-## Wiring up the backend later
-
-Replace `block_guidance\local\recommendation::for_course()` with the policy/AI-driven
-recommendation. Everything else — exporter, renderable, template — depends only
-on the `recommendation` shape, so it stays unchanged.
+`block_guidance_get_suggestion`, `block_guidance_dismiss`, `block_guidance_reset` — all
+capability-checked and delegating to `tool_guidance`'s engine and dismissal manager.
